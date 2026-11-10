@@ -1,0 +1,27 @@
+<ul class="book-list">
+  @for (book of books(); track book._id) {
+    <li class="book-item">
+      <strong class="book-title">{{ book.title }}</strong>
+      <span class="book-meta">ISBN: {{ book.isbn }}</span>
+      @if (book.author) {
+        <span class="book-meta">Autor: {{ book.author.name }} - {{ book.author.nationality }}</span>
+      } @else {
+        <span class="book-meta">Autor no disponible</span>
+      }
+      @if (book.genre) {
+        <span class="book-meta">Género: {{ book.genre.name }}</span>
+      }
+      @if (book.year) {
+        <span class="book-meta">Año: {{ book.year }}</span>
+      }
+      <div class="book-footer">
+        <span class="availability" [class.unavailable]="!book.available">
+          {{ book.available ? 'Disponible' : 'No disponible' }}
+        </span>
+        <button type="button" [disabled]="!book.available">Prestar</button>
+      </div>
+    </li>
+  } @empty {
+    <li class="empty-state">No hay libros registrados en el backend.</li>
+  }
+</ul>

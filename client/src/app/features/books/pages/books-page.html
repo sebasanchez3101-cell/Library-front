@@ -1,0 +1,54 @@
+<main class="library">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">CATÁLOGO</p>
+      <h1>Tu librería</h1>
+      <p class="page-description">Explora y administra los libros de tu colección.</p>
+    </div>
+    <div class="book-count" aria-label="Total de libros">
+      <strong>{{ books().length }}</strong>
+      <span>{{ books().length === 1 ? 'libro' : 'libros' }}</span>
+    </div>
+  </header>
+
+  <section class="book-form" aria-labelledby="add-book-heading">
+    <div class="form-heading">
+      <h2 id="add-book-heading">Agregar un libro</h2>
+      <p>Escribe un título para comenzar.</p>
+    </div>
+    <div class="form-controls">
+      <input
+        id="book-title"
+        name="bookTitle"
+        aria-label="Título del nuevo libro"
+        [(ngModel)]="newTitle"
+        placeholder="Escribe un título..."
+      />
+      <button class="primary-button" type="button" (click)="save()" [disabled]="!newTitle.trim()">
+        Guardar título
+      </button>
+    </div>
+    @if (newTitle) {
+      <p class="input-preview">Vista previa: <strong>{{ newTitle }}</strong></p>
+    }
+  </section>
+
+  <section class="catalog" aria-labelledby="book-list-heading">
+    <div class="catalog-heading">
+      <div>
+        <p class="eyebrow">COLECCIÓN</p>
+        <h2 id="book-list-heading">Libros</h2>
+      </div>
+      @if (!loading() && !error()) {
+        <span class="catalog-total">{{ books().length }} en catálogo</span>
+      }
+    </div>
+    @if (loading()) {
+      <p class="message" role="status">Cargando libros...</p>
+    } @else if (error()) {
+      <p class="message error" role="alert">{{ error() }}</p>
+    } @else {
+      <app-books [books]="books()" />
+    }
+  </section>
+</main>
